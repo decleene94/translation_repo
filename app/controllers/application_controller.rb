@@ -1,27 +1,18 @@
 class ApplicationController < ActionController::Base
+  include HTTParty
+
+  base_uri 'https://api.thenewsapi.com/v1'
 
   def index
-  end
+    api_key = 'qVeNafpSGQXWJ5aRbqdj8kIxKW5noNfTMZK4C7DY'
+    category = 'technology'
 
-  def show
-    @post = Post.find(params[:id])
-  end
+    response = self.class.get('/news/top', query: { category: category, api_token: api_key })
 
-  def create
-    @post = Post.new(post_params)
-    if @post.save
-      redirect_to posts_path
+    if response.success?
+      @news = response.parsed_response['data'] # Access the 'data' array
     else
-      render :new
+      raise StandardError, 'Failed to fetch news from thenewsapi.com'
     end
   end
-
-  # ...
-
-  private
-
-  def post_params
-    params.require(:post).permit(:title, :content)
-  end
-
 end
