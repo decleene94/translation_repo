@@ -1,0 +1,43 @@
+/* app/assets/stylesheets/news.css */
+.news-container {
+  text-align: center;
+  margin: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+.news-list {
+  list-style: none;
+  padding: 0;
+}
+
+.news-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #f0c929;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.news-image {
+  margin-right: 10px;
+}
+
+.news-image img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.news-title {
+  font-size: 24px;
+  margin: 0;
+  color: #ff00ff;
+  text-transform: uppercase;
+}
+
+.news-description {
+  font-size: 18px;
+  color: #000;
+  text-align: justify;
+}

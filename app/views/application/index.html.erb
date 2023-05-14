@@ -1,14 +1,22 @@
 <!-- app/views/news/index.html.erb -->
-<h1>Latest News</h1>
+<%= stylesheet_link_tag 'news', media: 'all' %>
 
-<ul>
-  <% @news.each do |article| %>
-    <li>
-      <h2><%= article['title'] %></h2>
-      <p><%= article['description'] %></p>
-      <% if article['image'] %>
-        <img src="<%= article['image'] %>" alt="Article Image">
-      <% end %>
-    </li>
-  <% end %>
-</ul>
+<div class="news-container">
+  <h1>Latest News</h1>
+
+  <ul class="news-list">
+    <% @news.each do |article| %>
+      <li class="news-item">
+        <% if article['image'] %>
+          <div class="news-image">
+            <img src="<%= article['image'] %>" alt="Article Image">
+          </div>
+        <% end %>
+        <div class="news-details">
+          <h2 class="news-title"><%= article['title'] %></h2>
+          <p class="news-description"><%= article['description'] %></p>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>
