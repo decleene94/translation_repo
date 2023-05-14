@@ -29,3 +29,8 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+
+# git add .
+# git commit -m "comment"
+# git add origin main
