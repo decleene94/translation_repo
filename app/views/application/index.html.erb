@@ -1,18 +1,25 @@
 <!-- app/views/news/index.html.erb -->
 <%= stylesheet_link_tag 'news', media: 'all' %>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
 
 <div class="news-container">
-  <h1>Latest News</h1>
+  <header>
+    <h1>Latest News</h1>
+    <form action="<%= posts_path %>" method="get" class="translation-form">
+      <div class="form-group">
+        <label for="from_language">Articles from:</label>
+        <input type="text" id="from_language" name="from_language" placeholder="Enter language">
+      </div>
 
-  <form action="<%= posts_path %>" method="get">
-    <label for="from_language">Articles from language:</label>
-    <input type="text" id="from_language" name="from_language" placeholder="Enter language">
+      <div class="form-group">
+        <label for="to_language">Translate to:</label>
+        <input type="text" id="to_language" name="to_language" placeholder="Enter language">
+      </div>
 
-    <label for="to_language">Translate to language:</label>
-    <input type="text" id="to_language" name="to_language" placeholder="Enter language">
-
-    <button type="submit">Submit</button>
-  </form>
+      <button type="submit">Translate</button>
+    </form>
+  </header>
 
   <ul class="news-list">
     <% @news.each do |article| %>
