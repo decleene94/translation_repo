@@ -81,3 +81,5 @@ end
 gem 'bootstrap', '~> 4.6', '>= 4.6.0'
 
 gem 'httparty'
+
+gem 'google-cloud-translate'

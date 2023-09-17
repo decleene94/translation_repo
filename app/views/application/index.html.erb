@@ -4,12 +4,22 @@
 <div class="news-container">
   <h1>Latest News</h1>
 
+  <form action="<%= posts_path %>" method="get">
+    <label for="from_language">Articles from language:</label>
+    <input type="text" id="from_language" name="from_language" placeholder="Enter language">
+
+    <label for="to_language">Translate to language:</label>
+    <input type="text" id="to_language" name="to_language" placeholder="Enter language">
+
+    <button type="submit">Submit</button>
+  </form>
+
   <ul class="news-list">
     <% @news.each do |article| %>
       <li class="news-item">
-        <% if article['image'] %>
+        <% if article['image_url'] %>
           <div class="news-image">
-            <img src="<%= article['image'] %>" alt="Article Image">
+            <img src="<%= article['image_url'] %>" alt="Article Image">
           </div>
         <% end %>
         <div class="news-details">
