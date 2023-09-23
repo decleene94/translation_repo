@@ -1,21 +1,26 @@
 class ApplicationController < ActionController::Base
   include HTTParty
 
-  NEWS_API_BASE = 'https://api.thenewsapi.com/v1'
+  NEWS_API_BASE = 'https://newsdata.io/api/1/news?'
   DEEPL_API_BASE = 'https://api-free.deepl.com/v2/translate'
 
   def index
-    api_key = 'qVeNafpSGQXWJ5aRbqdj8kIxKW5noNfTMZK4C7DY'
-    category = 'food'
-    language = 'de'
+    api_key = 'pub_2993851c649bcf95895cf05131da52e4ab6d2'
+    category = 'technology'
 
-    response = self.class.get("#{NEWS_API_BASE}/news/top", query: { category: category, api_token: api_key, language: language })
+    @input_languages = shared_languages # for the dropdown
+    @output_languages = shared_language_names # for the dropdown
+
+    @language = params[:input_language] || 'en'
+    @target_lang = params[:output_language] || 'EN'
+
+    response = self.class.get("#{NEWS_API_BASE}", query: { category: category, apikey: api_key, language: @language })
 
     if response.success?
-      news_articles = response.parsed_response['data']
-      @news = translate_articles(news_articles, 'EN')
+      news_articles = response.parsed_response['results'] || []
+      @news = translate_articles(news_articles, @target_lang)
     else
-      raise StandardError, 'Failed to fetch news from thenewsapi.com'
+      raise StandardError, 'Failed to fetch news from newsdata.io'
     end
   end
 
@@ -25,8 +30,8 @@ class ApplicationController < ActionController::Base
     translated_articles = []
 
     articles.each do |article|
-      translated_text = translate_text(article["description"], target_lang) # Assuming 'description' needs translation
-      article["description"] = translated_text
+      translated_text = translate_text(article["content"], target_lang) # Assuming 'description' needs translation
+      article["content"] = translated_text
       translated_articles << article
     end
 
@@ -46,58 +51,39 @@ class ApplicationController < ActionController::Base
       raise StandardError, "Failed to translate text with DeepL API: #{response.body}"
     end
   end
-end
 
-
-=begin
-class ApplicationController < ActionController::Base
-  include HTTParty
-
-  base_uri 'https://api.thenewsapi.com/v1'
-
-  def index
-    api_key = 'qVeNafpSGQXWJ5aRbqdj8kIxKW5noNfTMZK4C7DY'
-    category = 'food'
-    language = 'fr'
-
-    response = self.class.get('/news/top', query: { category: category, api_token: api_key, language: language })
-
-    if response.success?
-      @news = news_articles = response.parsed_response['data']
-      #news_articles = response.parsed_response['data'] # Access the 'data' array
-      #@news = translate_articles(news_articles, language)
-    else
-      raise StandardError, 'Failed to fetch news from thenewsapi.com'
-    end
+  def shared_languages
+    %w[bg cs da de el en es et fi fr hu id it ja ko lt nl pl pt ro ru sk sv tr uk zh]
   end
 
-  private
-
-end
-
-  def translate_articles(articles, target_language)
-    translated_articles = []
-    articles.each do |article|
-      translated_article = translate_text(article['description'], target_language)
-      translated_articles << { 'title' => article['title'], 'description' => translated_article }
-    end
-    translated_articles
+  def shared_language_names
+    {
+      'bg' => 'Bulgarian',
+      'cs' => 'Czech',
+      'da' => 'Danish',
+      'de' => 'German',
+      'el' => 'Greek',
+      'en' => 'English',
+      'es' => 'Spanish',
+      'et' => 'Estonian',
+      'fi' => 'Finnish',
+      'fr' => 'French',
+      'hu' => 'Hungarian',
+      'id' => 'Indonesian',
+      'it' => 'Italian',
+      'ja' => 'Japanese',
+      'ko' => 'Korean',
+      'lt' => 'Lithuanian',
+      'nl' => 'Dutch',
+      'pl' => 'Polish',
+      'pt' => 'Portuguese',
+      'ro' => 'Romanian',
+      'ru' => 'Russian',
+      'sk' => 'Slovak',
+      'sv' => 'Swedish',
+      'tr' => 'Turkish',
+      'uk' => 'Ukrainian',
+      'zh' => 'Chinese'
+    }
   end
-
-  def translate_text(text, target_language)
-  # Instantiates a client
-  require "google/cloud/translate"
-
-  translate = Google::Cloud::Translate.translation_v2_service
-
-  # The target language
-  target = target_language
-
-  # Translates some text into the target language
-  translation = translate.translate_text text: text, target_language: target, parent: "projects/#{ENV['psychic-raceway-386709']}/locations/global"
-
-  translation.translations.first.translated_text
 end
-
-end
-=end
