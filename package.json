@@ -3,6 +3,9 @@
   "version": "test",
   "description": "test",
   "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": "git@github.com:decleene94/translation_repo.git",
   "author": "John DeCleene <decleene94@gmail.com>",
   "license": "MIT"
