@@ -34,8 +34,8 @@ class ApplicationController < ActionController::Base
     translated_articles = []
 
     articles.each do |article|
-      translated_text = translate_text(article["content"], target_lang) # Assuming 'description' needs translation
-      article["content"] = translated_text
+      translated_text = translate_text(article["title"], target_lang) # Assuming 'description' needs translation
+      article["title"] = translated_text
       translated_articles << article
     end
 
